@@ -17,9 +17,9 @@ import com.lucas.mafia.domain.models.Party;
 import com.lucas.mafia.domain.services.PartyService;
 import com.lucas.mafia.requests.PartyRequests.CheckPartyRequest;
 import com.lucas.mafia.requests.PartyRequests.CreatePartyRequest;
-import com.lucas.mafia.requests.PartyRequests.DeletePlayerPartyRequest;
 import com.lucas.mafia.requests.PartyRequests.GetPartyRequest;
 import com.lucas.mafia.requests.PartyRequests.JoinPartyRequest;
+import com.lucas.mafia.requests.PartyRequests.PlayerPartyRequest;
 
 @RequestMapping("api/mafia/party")
 @RestController
@@ -94,7 +94,7 @@ public class PartyController {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<?> removePlayer(@RequestBody DeletePlayerPartyRequest request) {
+    public ResponseEntity<?> removePlayer(@RequestBody PlayerPartyRequest request) {
         Party party = partyService.removePlayer(request.getPartyId(), request.getPlayerId());
         
         if (party == null)
@@ -105,6 +105,21 @@ public class PartyController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(null);
+    }
+
+    @PostMapping("/ready")
+    public ResponseEntity<?> playerReady(@RequestBody PlayerPartyRequest request) {
+        Party party = partyService.playerReady(request.getPartyId(), request.getPlayerId());
+        
+        if (party == null)
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "Party not found."));
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(null);
+
     }
     
 }

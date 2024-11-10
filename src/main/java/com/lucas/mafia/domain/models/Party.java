@@ -19,6 +19,7 @@ public class Party {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    private final int minPlayers = 4;
     private int changes;
     private ArrayList<Player> players;
     private GameStatus status;
@@ -34,10 +35,10 @@ public class Party {
 
     public void addPlayer(String name) {
         changes++;
-        players.add(new Player(name));
+        players.add(new Player((long)changes, name));
     }
 
-    public void removePlayer(UUID id) {
+    public void removePlayer(Long id) {
         changes++;
         players.removeIf(player -> player.getId().equals(id));
 
@@ -45,7 +46,7 @@ public class Party {
             players.get(0).setLeader(true);
     }
 
-    public void playerReady(UUID id) {
+    public void playerReady(Long id) {
         changes++;
         int playersReady = 0;
 
@@ -57,7 +58,7 @@ public class Party {
                 playersReady++;
         }
 
-        if (playersReady == players.size())
+        if (playersReady == players.size() && playersReady >= minPlayers)
             status = GameStatus.ASSASSIN_TURN;
     }
 

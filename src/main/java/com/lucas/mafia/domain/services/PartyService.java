@@ -40,7 +40,7 @@ public class PartyService {
         return null;
     }
 
-    public Party removePlayer(Long partyId, UUID playerId) {
+    public Party removePlayer(Long partyId, Long playerId) {
         Optional<Party> partyOptional = partyRepository.findById(partyId);
 
         if (!partyOptional.isPresent())
@@ -48,6 +48,17 @@ public class PartyService {
 
         Party party = partyOptional.get();
         party.removePlayer(playerId);
+        return partyRepository.save(party);
+    }
+
+    public Party playerReady(Long partyId, Long playerId) {
+        Optional<Party> partyOptional = partyRepository.findById(partyId);
+
+        if (!partyOptional.isPresent())
+            return null;
+
+        Party party = partyOptional.get();
+        party.playerReady(playerId);
         return partyRepository.save(party);
     }
 }

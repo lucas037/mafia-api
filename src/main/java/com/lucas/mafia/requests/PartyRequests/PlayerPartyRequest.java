@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DeletePlayerPartyRequest {
-    private UUID playerId;
+public class PlayerPartyRequest {
+    private Long playerId;
     private Long partyId; 
 }
