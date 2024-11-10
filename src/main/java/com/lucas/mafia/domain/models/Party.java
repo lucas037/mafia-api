@@ -1,9 +1,10 @@
 package com.lucas.mafia.domain.models;
 
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Random;
 
 import com.lucas.mafia.enums.GameStatus;
+import com.lucas.mafia.enums.PlayerType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -59,11 +60,34 @@ public class Party {
         }
 
         if (playersReady == players.size() && playersReady >= minPlayers)
-            status = GameStatus.ASSASSIN_TURN;
+            startGame();
     }
 
     public void startGame() {
         changes++;
         status = GameStatus.ASSASSIN_TURN;
+
+        Random rand = new Random();
+
+        // Define todos os jogadores como cicadões
+        for (Player player : players) {
+            player.setType(PlayerType.CITIZEN);
+            player.starGame();
+        }
+
+        // Define um assassino
+        int var = rand.nextInt(players.size());
+        players.get(var).setType(PlayerType.ASSASSIN);
+
+        // Define um médico
+        while (players.get(var).getType() != PlayerType.CITIZEN)
+            var = rand.nextInt(players.size());
+        players.get(var).setType(PlayerType.DOCTOR);
+
+        // Define um detetive
+        while (players.get(var).getType() != PlayerType.CITIZEN)
+            var = rand.nextInt(players.size());
+        players.get(var).setType(PlayerType.DETECTIVE);
+        
     }
 }
