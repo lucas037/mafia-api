@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lucas.mafia.domain.models.Party;
@@ -82,7 +83,7 @@ public class PartyController {
     
         if (party == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", "Party not found with ID: " + request.getPartyId()));
+            .body(Map.of("error", "Party not found."));
     
         Map<String, Object> response = new HashMap<>();
         response.put("partyId", request.getPartyId());
